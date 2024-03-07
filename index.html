@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Case Notes Generator</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #header {
+            background-color: #007bff;
+            padding: 20px;
+            text-align: center;
+        }
+        #header img {
+            max-width: 100%;
+            height: auto;
+        }
+        #copyButton {
+            color: white;
+            background-color: green;
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        h1 {
+            color: red;
+            text-align: center;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h2>Support Case Notes Generator V1.3</h2>
+    </div>
+    <button id="copyButton">Copy to Clipboard</button>
+    <h1>Paste this content to ChatGPT to get the notes</h1>
+    <div id="output"></div>
+
+    <!-- Popup -->
+    <div id="popup" class="popup">
+        <h2>Welcome to Support Case Notes Generator</h2>
+        <p>This tool helps you generate various support case notes. Select a template and provide the necessary information.</p>
+        <button id="closePopup">Close</button>
+    </div>
+
+    <script>
+        // Popup
+        document.addEventListener("DOMContentLoaded", function() {
+            var popup = document.getElementById('popup');
+            var closePopup = document.getElementById('closePopup');
+
+            // Show popup
+            setTimeout(function() {
+                popup.style.display = 'block';
+            }, 2000);
+
+            // Close popup
+            closePopup.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+        });
+
+        // Rest of your script
+        var feedbackLink = "https://forms.office.com/r/aDAC75B8ja"; // Replace with your feedback link
+
+        var selected = prompt("Select the template:\n1 - Case Notes\n2 - Transfer Notes\n3 - Handover Notes\n4 - LQR Email\n5 - Case Close Notes\n6 - Provide Feedback");
+
+        if (selected === "6") {
+            window.location.href = feedbackLink;
+        } else {
+            var global1 = ", need a support case notes using below template and using below case summary";
+            var global2 = ", need a support case transfer notes using below template and using below case summary";
+            var global3 = ", need a handover notes using below template and using below case summary, ALSO FILL THE ACTION PLAN BAED ON THE SUMMARY AND ADD NOTES DONT LEAVE IT BLANK";
+            var global4 = ", need a LQR email based on the template and using below case summary, please not do not use customer in the issue/ resolution use you, we. also fill the issue and resolution feilds in the email template";
+
+            var case_notes_temp = "SUMMARY\n\n+++++++++++++++++++++++++++\n\nSCOPE\n\n[Issue Description]\n[Business Impact]\n[Expected Outcome]\n\n+++++++++++++++++++++++++++\n\nCASE SUMMARY\n\n[Environment]\n[Troubleshooting]\n\nAction Plan template:\n\nACTION PLAN\n\nCase Status: <who>\nNext Action: <what/why>\nNext Contact: <when>";
+
+            var transfer_notes_temp = "+++++++++++++++++++++++++++\n\nCase originated from:AAD DEV\nTransfer reason:\nSender's availability:10:30 AM IST TO 7:30 PM IST\nBest contact method:PHONE\n\n+++++++++++++++++++++++++++\n\nCustomer language constraints:NONE\n\n+++++++++++++++++++++++++++\n\nSummary\n\n+++++++++++++++++++++++++++\n\nScope:\n\n[Issue Description]\n[Business Impact]\n[Expected Outcome]\n\n+++++++++++++++++++++++++++\n\nCase Summary:\n\n[Environment]\n[Troubleshooting]\n\n+++++++++++++++++++++++++++\n\nAction Plan:\n\nCase Status: [who]\nNext Action: [what/why]\nNext Contact: [when]";
+
+            var handover_notes_temp = "FILL THE BELOW INFORMATION BASED ON THE SUMMARY , FILL ENGINEERS AVAILABITY, TEIR LEEL, BEST CONTACT METHOD, AS THE [FILL THIS] . FILL THE ACTION PLAN BASED ON THE SUMMARY OR ADD NOTES- Transfer reason: \nTransferred by Tier Level: \nSource Engineer availability: \nBest contact method: \n\n++++++++++++++++++++++++++\n\nCustomer language constraints: none\n\n+++++++++++++++++++++++++++\n\nScope:\n\n- Business Impact:\n- Incident Statement: \n\n- Environment: ADFS Server\n- Logs/correlation ids:\n\n+++++++++++++++++++++++++++\n\nAction Plan:\n\n- Action on Microsoft:\n- Action on Customer/Partner: none\n- Next Contact: As soon as possible";
+
+            var lqr_email_temp = "Hello customer,\n\nThank you for the confirmation.\n\nIt was my pleasure working with you on this SR and hope the support experience was good. Please spare some time to fill in the survey you will receive upon closure with your feedback.\n\nYour feedback is very important to us, and we use it to continually improve our service.\n\nI am proceeding with the archival of this case now. It simply means we are closing the case, if you want to reopen the case, please reply to this thread.\n\nHere is a summary of the case for your records:\nIssue: \nResolution: \n\nThank you for your time and patience in this matter. If you have any further questions or concerns, please feel free to drop me an email.\n\nIf you have any immediate feedback about my work, please let my manager Bindhiya know at bahamed@microsoft.com.\n\nThank you for choosing Microsoft!";
+
+            var case_close_notes_temp = "Case Close Checklist:\n\n1. SLA Met – Y\n2. FQR - Y\n3. LQR - Y\n4. Customer Commitments / Follow-up’s were kept – Y\n5. Customer did not ask for case updates – N\n6. There was not a need for an ICM on this case - Y\n7. All customer Issues were resolved - Y\na. Did the case owner resolve the issue – Y\nb. Resolution was confirmed by Customer – Y\n8. Was the issue resolved within 14days – Y\n9. Did Customer confirm closure of the case – Y\n10. Did CSS validate the correctness of the Support Topic Path - Y\n\nIssue:\n\nCause:\n\nResolution:\n";
+
+            var summary = prompt("Enter the summary text:");
+            var add_notes = prompt("Enter additional notes/ Action Plan / Incident statement / Cx verbatim (if any):");
+            var contact_method = "";
+            var reason_for_transfer = "";
+
+            if (selected === "2" || selected === "3") {
+                reason_for_transfer = prompt("Enter reason for transfer:");
+            }
+
+            if (selected === "4") {
+                contact_method = prompt("Select contact method:\n1 - Email");
+            }
+
+            var final_string = "";
+
+            if (selected === "1") {
+                var temp = case_notes_temp;
+                final_string = summary + global1 + temp + add_notes;
+            } else if (selected === "2") {
+                var temp = transfer_notes_temp;
+                final_string = summary + global2 + temp.replace("Transfer reason:", "Transfer reason: " + reason_for_transfer) + add_notes;
+            } else if (selected === "3") {
+                var temp = handover_notes_temp;
+                final_string = summary + global3 + temp.replace("Transfer reason:", "Transfer reason: " + reason_for_transfer) + add_notes;
+            } else if (selected === "4") {
+                if (contact_method === "1") {
+                    final_string = summary + global4 + lqr_email_temp.replace("do not use the customer in the email use you", summary + add_notes);
+                } else {
+                    final_string = "Invalid contact method";
+                }
+            } else if (selected === "5") {
+                var temp = case_close_notes_temp;
+                final_string = "create a notes based on the summary provided and fill the checklist- Case Close Checklist:\n\n" + temp + "\n\n" + summary + "\n" + add_notes;
+            } else {
+                final_string = "Invalid selection";
+            }
+
+            document.getElementById("output").innerText = final_string;
+
+            // Copy to clipboard functionality
+            document.getElementById("copyButton").addEventListener("click", function() {
+                var textToCopy = document.getElementById("output").innerText;
+                navigator.clipboard.writeText(textToCopy)
+                    .then(function() {
+                        console.log('Text copied to clipboard');
+                        alert('Text copied to clipboard');
+                    })
+                    .catch(function(err) {
+                        console.error('Unable to copy text to clipboard', err);
+                        alert('Unable to copy text to clipboard');
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
