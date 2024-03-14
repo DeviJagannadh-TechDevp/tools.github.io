@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>History Quiz</title>
+<link rel="stylesheet" href="style-his.css">
+
+</head>
+<body>
+  <div class="question-header">
+        <h1>Hey Meg, Here are 3 questions for you from Ancient, Medieval, and Modern history.</h1>
+    </div>
+	
+
+<div id="question-container">
+  <div id="question1" class="question"></div>
+  <div id="options1" class="options-container"></div>
+  <button id="submitBtn1" class="submit-btn" onclick="checkAnswer(0)">Submit</button>
+  <div id="feedback1" class="feedback"></div>
+
+  <div id="question2" class="question"></div>
+  <div id="options2" class="options-container"></div>
+  <button id="submitBtn2" class="submit-btn" onclick="checkAnswer(1)">Submit</button>
+  <div id="feedback2" class="feedback"></div>
+
+  <div id="question3" class="question"></div>
+  <div id="options3" class="options-container"></div>
+  <button id="submitBtn3" class="submit-btn" onclick="checkAnswer(2)">Submit</button>
+  <div id="feedback3" class="feedback"></div>
+</div>
+<hr>
+<center>
+<button onclick="window.print()">Dont forgot to print this page and send it to DJ - EVERYDAY TASK</button><center><hr>
+<div class="question-header">
+        <h4>Please inform me on 13/04/2024 for updating the questions.</h4>
+		<h4>With love, your DJ</h4>
+    </div>
+
+<script>
+  // medquestions data
+const medquestions = [
+  {
+    question: "Who was the founder of the Delhi Sultanate?",
+    options: ["Qutb-ud-din Aibak", "Iltutmish", "Raziya Sultan", "Alauddin Khilji"],
+    correctAnswer: "Qutb-ud-din Aibak",
+    explanation: "Qutb-ud-din Aibak established the Delhi Sultanate after the defeat of Prithviraj Chauhan in 1192 AD."
+  },
+  {
+    question: "Which battle led to the foundation of the Delhi Sultanate in India?",
+    options: ["First Battle of Tarain", "Second Battle of Tarain", "Battle of Plassey", "Battle of Haldighati"],
+    correctAnswer: "Second Battle of Tarain",
+    explanation: "The Second Battle of Tarain in 1192 AD led to the establishment of the Delhi Sultanate in India by Qutb-ud-din Aibak."
+  },
+  {
+    question: "Who was the last Hindu ruler to sit on the throne of Delhi before the establishment of the Delhi Sultanate?",
+    options: ["Prithviraj Chauhan", "Rana Sanga", "Harshavardhana", "Chandragupta Maurya"],
+    correctAnswer: "Prithviraj Chauhan",
+    explanation: "Prithviraj Chauhan was the last Hindu ruler to sit on the throne of Delhi before the establishment of the Delhi Sultanate in 1192 AD."
+  },
+  {
+    question: "Which dynasty ruled Delhi Sultanate for the longest period of time?",
+    options: ["Slave dynasty", "Khilji dynasty", "Tughlaq dynasty", "Sayyid dynasty"],
+    correctAnswer: "Tughlaq dynasty",
+    explanation: "The Tughlaq dynasty ruled Delhi Sultanate for the longest period of time from 1320 to 1414 AD."
+  },
+  {
+    question: "Who was the first Sultan of Delhi to introduce the Iqta system?",
+    options: ["Balban", "Alauddin Khilji", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Balban",
+    explanation: "Balban was the first Sultan of Delhi to introduce the Iqta system, a land revenue system, during his reign."
+  },
+  {
+    question: "Who built the Qutub Minar in Delhi?",
+    options: ["Qutb-ud-din Aibak", "Iltutmish", "Alauddin Khilji", "Firoz Shah Tughlaq"],
+    correctAnswer: "Qutb-ud-din Aibak",
+    explanation: "Qutb-ud-din Aibak started the construction of the Qutub Minar in 1192 AD. Later, it was completed by his successor Iltutmish."
+  },
+  {
+    question: "Which Sultan of Delhi was known for his market regulation policies?",
+    options: ["Balban", "Alauddin Khilji", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Alauddin Khilji",
+    explanation: "Alauddin Khilji is known for his market regulation policies during his reign. He introduced various market reforms to stabilize prices and control the economy."
+  },
+  {
+    question: "Who was the first woman to sit on the throne of Delhi and rule as a Sultan?",
+    options: ["Raziya Sultan", "Razia Begum", "Sultana Razia", "Raziya al-Din"],
+    correctAnswer: "Raziya Sultan",
+    explanation: "Raziya Sultan was the first woman to sit on the throne of Delhi and rule as a Sultan. She ascended to the throne in 1236 AD after the death of her father, Sultan Iltutmish."
+  },
+  {
+    question: "Which Sultan of Delhi introduced the 'Dagh' and 'Chehra' branding of horses?",
+    options: ["Balban", "Alauddin Khilji", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Alauddin Khilji",
+    explanation: "Alauddin Khilji introduced the branding of horses with 'Dagh' and 'Chehra' to maintain a strong cavalry for his army."
+  },
+  {
+    question: "Who among the following Sultans of Delhi was known as 'the second Alexander'?",
+    options: ["Alauddin Khilji", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq", "Balban"],
+    correctAnswer: "Muhammad bin Tughlaq",
+    explanation: "Muhammad bin Tughlaq was known as 'the second Alexander' due to his ambitious military campaigns and conquests."
+  },
+  {
+    question: "Which Sultan of Delhi established the 'diwan-i-khairat'?",
+    options: ["Balban", "Alauddin Khilji", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Firoz Shah Tughlaq",
+    explanation: "Firoz Shah Tughlaq established the 'diwan-i-khairat' which provided financial assistance to the poor and needy."
+  },
+  {
+    question: "Who is known as the 'builder of forts' among the Delhi Sultans?",
+    options: ["Alauddin Khilji", "Balban", "Firoz Shah Tughlaq", "Muhammad bin Tughlaq"],
+    correctAnswer: "Balban",
+    explanation: "Balban is known as the 'builder of forts' among the Delhi Sultans for strengthening fortifications during his reign."
+  },
+  {
+    question: "Which Sultan of Delhi introduced the practice of 'sijdah' or prostration before the king?",
+    options: ["Balban", "Alauddin Khilji", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Balban",
+    explanation: "Balban introduced the practice of 'sijdah' or prostration before the king as a symbol of submission and loyalty."
+  },
+  {
+    question: "Who among the following Delhi Sultans was known for his cruelty towards Mongols and his 'blood and iron' policy?",
+    options: ["Alauddin Khilji", "Balban", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Alauddin Khilji",
+    explanation: "Alauddin Khilji was known for his cruelty towards Mongols and his 'blood and iron' policy to maintain control over his empire."
+  },
+  {
+    question: "Who was the last ruler of the Slave dynasty?",
+    options: ["Qutb-ud-din Aibak", "Iltutmish", "Balban", "Jalal-ud-din Khalji"],
+    correctAnswer: "Jalal-ud-din Khalji",
+    explanation: "Jalal-ud-din Khalji was the last ruler of the Slave dynasty. He was assassinated by his nephew Alauddin Khilji."
+  },
+  {
+    question: "Who was the first Sultan of Delhi to abolish the 'Iqta' system?",
+    options: ["Alauddin Khilji", "Balban", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Alauddin Khilji",
+    explanation: "Alauddin Khilji abolished the 'Iqta' system and introduced the 'Zabt' system of revenue collection."
+  },
+  {
+    question: "Which Sultan of Delhi built the Hauz Khas reservoir in Delhi?",
+    options: ["Alauddin Khilji", "Balban", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Alauddin Khilji",
+    explanation: "Alauddin Khilji built the Hauz Khas reservoir in Delhi to meet the water needs of the growing population."
+  },
+  {
+    question: "Who among the following Delhi Sultans is credited with the construction of Siri Fort in Delhi?",
+    options: ["Alauddin Khilji", "Balban", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Alauddin Khilji",
+    explanation: "Alauddin Khilji is credited with the construction of Siri Fort in Delhi as part of his defensive measures."
+  },
+  {
+    question: "Which Sultan of Delhi introduced the practice of 'token currency'?",
+    options: ["Alauddin Khilji", "Balban", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Muhammad bin Tughlaq",
+    explanation: "Muhammad bin Tughlaq introduced the practice of 'token currency' during his reign."
+  },
+  {
+    question: "Who among the following Sultans of Delhi was known for his experiment of shifting the capital from Delhi to Daulatabad?",
+    options: ["Alauddin Khilji", "Balban", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Muhammad bin Tughlaq",
+    explanation: "Muhammad bin Tughlaq experimented with shifting the capital from Delhi to Daulatabad, which proved to be a failure."
+  },
+  {
+    question: "Which Sultan of Delhi was known for his construction of the 'Alai Darwaza' in the Qutub Complex?",
+    options: ["Alauddin Khilji", "Balban", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Alauddin Khilji",
+    explanation: "Alauddin Khilji constructed the 'Alai Darwaza' in the Qutub Complex as an entrance to the Quwwat-ul-Islam Mosque."
+  },
+  {
+    question: "Who was the first Sultan of Delhi to introduce the 'Pargana' system?",
+    options: ["Balban", "Alauddin Khilji", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Alauddin Khilji",
+    explanation: "Alauddin Khilji introduced the 'Pargana' system, a revenue administration system, during his reign."
+  },
+  {
+    question: "Who among the following Sultans of Delhi introduced the 'Khalisa' land revenue system?",
+    options: ["Balban", "Alauddin Khilji", "Muhammad bin Tughlaq", "Firoz Shah Tughlaq"],
+    correctAnswer: "Alauddin Khilji",
+    explanation: "Alauddin Khilji introduced the 'Khalisa' land revenue system, which was the revenue collected directly by the state."
+  },
+  {
+    question: "Who among the following Sultans of Delhi established the 'Ghazi Malik' dynasty?",
+    options: ["Muhammad bin Tughlaq", "Firoz Shah Tughlaq", "Ghiyasuddin Tughlaq", "Alauddin Khilji"],
+    correctAnswer: "Ghiyasuddin Tughlaq",
+    explanation: "Ghiyasuddin Tughlaq established the 'Ghazi Malik' dynasty, which later came to be known as the Tughlaq dynasty."
+  },
+  {
+    question: "Which Sultan of Delhi was known for his construction of the 'Qila-i-Kuhna Mosque' in Delhi?",
+    options: ["Muhammad bin Tughlaq", "Firoz Shah Tughlaq", "Ghiyasuddin Tughlaq", "Alauddin Khilji"],
+    correctAnswer: "Firoz Shah Tughlaq",
+    explanation: "Firoz Shah Tughlaq constructed the 'Qila-i-Kuhna Mosque' within the premises of the Feroz Shah Kotla complex in Delhi."
+  },
+  {
+    question: "Who among the following Sultans of Delhi introduced the 'Chahalgani' system?",
+    options: ["Firoz Shah Tughlaq", "Muhammad bin Tughlaq", "Ghiyasuddin Tughlaq", "Alauddin Khilji"],
+    correctAnswer: "Muhammad bin Tughlaq",
+    explanation: "Muhammad bin Tughlaq introduced the 'Chahalgani' system, a group of 40 powerful nobles who advised the Sultan."
+  },
+  {
+    question: "Which Sultan of Delhi was known for his construction of the 'Feroz Shah Kotla' in Delhi?",
+    options: ["Firoz Shah Tughlaq", "Muhammad bin Tughlaq", "Ghiyasuddin Tughlaq", "Alauddin Khilji"],
+    correctAnswer: "Firoz Shah Tughlaq",
+    explanation: "Firoz Shah Tughlaq constructed the 'Feroz Shah Kotla' in Delhi, which served as his citadel and palace."
+  },
+  {
+    question: "Who among the following Sultans of Delhi introduced the 'Din-i-Ilahi' religion?",
+    options: ["Akbar", "Babur", "Humayun", "Jahangir"],
+    correctAnswer: "Akbar",
+    explanation: "Akbar introduced the 'Din-i-Ilahi' religion, which was a syncretic faith combining elements of Islam, Hinduism, Christianity, and Zoroastrianism."
+  }
+];
+
+
+
+
+//anc
+const questionsanc = [
+  {
+    question: "Which ancient civilization is known for building pyramids?",
+    options: ["Mesopotamia", "Egypt", "Indus Valley", "China"],
+    correctAnswer: "Egypt",
+    explanation: "The ancient Egyptians are known for constructing pyramids, such as the Great Pyramid of Giza."
+  },
+  {
+    question: "Who was the legendary founder of Rome?",
+    options: ["Romulus", "Julius Caesar", "Augustus", "Nero"],
+    correctAnswer: "Romulus",
+    explanation: "According to Roman mythology, Romulus and his twin brother Remus were raised by a she-wolf and founded the city of Rome."
+  },
+  {
+    question: "Which ancient civilization developed the concept of zero?",
+    options: ["Mesopotamia", "Indus Valley", "Egypt", "Maya"],
+    correctAnswer: "Indus Valley",
+    explanation: "The ancient Indus Valley civilization is believed to have developed the concept of zero as a placeholder in numerical systems."
+  },
+  {
+    question: "What was the capital of the ancient Persian Empire?",
+    options: ["Persepolis", "Babylon", "Susa", "Pasargadae"],
+    correctAnswer: "Persepolis",
+    explanation: "Persepolis served as the ceremonial capital of the Achaemenid Empire, one of the largest ancient empires."
+  },
+  {
+    question: "Which ancient Greek philosopher is known for his contributions to Western philosophy?",
+    options: ["Socrates", "Confucius", "Buddha", "Ashoka"],
+    correctAnswer: "Socrates",
+    explanation: "Socrates is considered one of the founders of Western philosophy and is known for the Socratic method of questioning."
+  },
+  {
+    question: "Who wrote the epic poem 'The Iliad'?",
+    options: ["Homer", "Virgil", "Sophocles", "Aristotle"],
+    correctAnswer: "Homer",
+    explanation: "Homer, an ancient Greek poet, is traditionally credited with composing 'The Iliad' and 'The Odyssey'."
+  },
+  {
+    question: "Which ancient civilization developed the first known writing system?",
+    options: ["Sumerians", "Minoans", "Hittites", "Phoenicians"],
+    correctAnswer: "Sumerians",
+    explanation: "The Sumerians of Mesopotamia developed cuneiform writing, one of the earliest known writing systems."
+  },
+  {
+    question: "What is the name of the ancient sacred text of Hinduism?",
+    options: ["Vedas", "Bhagavad Gita", "Ramayana", "Mahabharata"],
+    correctAnswer: "Vedas",
+    explanation: "The Vedas are a collection of ancient Hindu scriptures, considered the oldest sacred texts of Hinduism."
+  },
+  {
+    question: "Who was the first emperor of China?",
+    options: ["Qin Shi Huang", "Emperor Wu", "Emperor Yao", "Emperor Shun"],
+    correctAnswer: "Qin Shi Huang",
+    explanation: "Qin Shi Huang unified China and became its first emperor, ruling from 221 to 210 BCE."
+  },
+  {
+    question: "Which ancient civilization built the city of Machu Picchu?",
+    options: ["Inca", "Aztec", "Maya", "Moche"],
+    correctAnswer: "Inca",
+    explanation: "Machu Picchu was built by the Inca civilization in the 15th century and served as a royal estate or retreat."
+  },
+  {
+    question: "Who was the first emperor of the Maurya Empire in ancient India?",
+    options: ["Chandragupta Maurya", "Ashoka", "Bindusara", "Chandragupta II"],
+    correctAnswer: "Chandragupta Maurya",
+    explanation: "Chandragupta Maurya founded the Maurya Empire in ancient India and ruled from 322 to 298 BCE."
+  },
+  {
+    question: "Which ancient civilization built the city of Petra?",
+    options: ["Nabateans", "Sumerians", "Assyrians", "Phoenicians"],
+    correctAnswer: "Nabateans",
+    explanation: "The Nabateans, an ancient Arab civilization, built the city of Petra in present-day Jordan."
+  },
+  {
+    question: "What ancient city was known for the Hanging Gardens?",
+    options: ["Babylon", "Memphis", "Nineveh", "Persepolis"],
+    correctAnswer: "Babylon",
+    explanation: "The Hanging Gardens of Babylon were one of the Seven Wonders of the Ancient World and are believed to have been in the city of Babylon."
+  },
+  {
+    question: "Who was the legendary king of Uruk in ancient Mesopotamian mythology?",
+    options: ["Enkidu", "Gilgamesh", "Ishtar", "Marduk"],
+    correctAnswer: "Gilgamesh",
+    explanation: "Gilgamesh, the legendary king of Uruk, is the central character of the Epic of Gilgamesh, one of the earliest known literary works."
+  },
+  {
+    question: "Which ancient civilization is known for its terracotta army?",
+    options: ["China", "Greece", "Rome", "Persia"],
+    correctAnswer: "China",
+    explanation: "The terracotta army was buried with the first Emperor of China, Qin Shi Huang, to protect him in the afterlife."
+  },
+  {
+    question: "Who was the Egyptian queen known for her affair with Julius Caesar and Mark Antony?",
+    options: ["Cleopatra", "Nefertiti", "Hatshepsut", "Hypatia"],
+    correctAnswer: "Cleopatra",
+    explanation: "Cleopatra VII was the last active ruler of the Ptolemaic Kingdom of Egypt, famous for her relationships with Julius Caesar and Mark Antony."
+  },
+  {
+    question: "Which ancient civilization developed the concept of democracy?",
+    options: ["Greece", "Rome", "Egypt", "Mesopotamia"],
+    correctAnswer: "Greece",
+    explanation: "Ancient Greece is credited with the development of democracy, particularly in the city-state of Athens."
+  },
+  {
+    question: "Who was the philosopher known for his dialogues with Socrates and his Academy in Athens?",
+    options: ["Plato", "Aristotle", "Pythagoras", "Epicurus"],
+    correctAnswer: "Plato",
+    explanation: "Plato was a philosopher in ancient Greece and the founder of the Academy in Athens, the first institution of higher learning in the Western world."
+  },
+  {
+    question: "What was the name of the ancient trade route that connected China to the Mediterranean?",
+    options: ["Silk Road", "Incense Route", "Amber Road", "Salt Route"],
+    correctAnswer: "Silk Road",
+    explanation: "The Silk Road was a network of trade routes that facilitated cultural exchange and commerce between China and the Mediterranean."
+  },
+  {
+    question: "Who was the legendary hero of the Trojan War in Greek mythology?",
+    options: ["Achilles", "Hector", "Odysseus", "Paris"],
+    correctAnswer: "Achilles",
+    explanation: "Achilles was a Greek hero of the Trojan War and the central character of Homer's 'The Iliad'."
+  },
+  {
+    question: "What ancient civilization built the Great Wall of China?",
+    options: ["China", "Persia", "Rome", "Mongolia"],
+    correctAnswer: "China",
+    explanation: "The Great Wall of China was built over centuries by various Chinese dynasties to protect against invasions from nomadic tribes."
+  },
+  {
+    question: "Which ancient civilization developed the first known system of writing?",
+    options: ["Sumerians", "Egyptians", "Indus Valley", "Chinese"],
+    correctAnswer: "Sumerians",
+    explanation: "The Sumerians of Mesopotamia developed cuneiform writing, one of the earliest known writing systems."
+  },
+  {
+    question: "Who was the first Roman emperor?",
+    options: ["Augustus", "Julius Caesar", "Nero", "Trajan"],
+    correctAnswer: "Augustus",
+    explanation: "Augustus was the first Roman emperor, ruling from 27 BC until his death in AD 14."
+  },
+  {
+    question: "Which ancient civilization developed the concept of monotheism?",
+    options: ["Hebrews", "Egyptians", "Greeks", "Persians"],
+    correctAnswer: "Hebrews",
+    explanation: "The Hebrews, later known as the Israelites or Jews, developed the concept of monotheism with the belief in one God."
+  },
+  {
+    question: "Who was the ancient Greek mathematician known as the 'father of geometry'?",
+    options: ["Euclid", "Pythagoras", "Archimedes", "Thales"],
+    correctAnswer: "Euclid",
+    explanation: "Euclid was a Greek mathematician known for his work 'Elements', which laid the foundations of geometry."
+  },
+  {
+    question: "Which ancient civilization built the city of Carthage?",
+    options: ["Phoenicians", "Greeks", "Romans", "Etruscans"],
+    correctAnswer: "Phoenicians",
+    explanation: "The Phoenicians, a seafaring civilization, built the city of Carthage, located in present-day Tunisia."
+  },
+  {
+    question: "Who was the legendary king of Athens in Greek mythology?",
+    options: ["Theseus", "Pericles", "Solon", "Aegeus"],
+    correctAnswer: "Theseus",
+    explanation: "Theseus was a legendary king of Athens known for his heroic deeds, including the slaying of the Minotaur."
+  },
+  {
+    question: "Which ancient civilization is known for its ziggurats?",
+    options: ["Sumerians", "Egyptians", "Greeks", "Maya"],
+    correctAnswer: "Sumerians",
+    explanation: "The Sumerians built ziggurats, large stepped structures, as temples and religious centers in ancient Mesopotamia."
+  },
+  {
+    question: "Who was the ancient Greek goddess of wisdom and warfare?",
+    options: ["Athena", "Artemis", "Aphrodite", "Hera"],
+    correctAnswer: "Athena",
+    explanation: "Athena was the goddess of wisdom, courage, inspiration, civilization, law and justice, strategic warfare, mathematics, strength, strategy, the arts, crafts, and skill in ancient Greek religion and mythology."
+  },
+  {
+    question: "Which ancient civilization is known for its use of hieroglyphic writing?",
+    options: ["Egyptians", "Sumerians", "Minoans", "Phoenicians"],
+    correctAnswer: "Egyptians",
+    explanation: "The ancient Egyptians used hieroglyphic writing, which consisted of pictorial symbols, for religious texts and inscriptions."
+  }
+];
+
+
+
+//mod
+const questionsmod = [
+  {
+    question: "Who was the first President of the United States?",
+    options: ["George Washington", "Thomas Jefferson", "Abraham Lincoln", "John Adams"],
+    correctAnswer: "George Washington",
+    explanation: "George Washington served as the first President of the United States from 1789 to 1797."
+  },
+  {
+    question: "Which event marked the beginning of World War I?",
+    options: ["Assassination of Archduke Franz Ferdinand", "Bombing of Pearl Harbor", "Signing of the Treaty of Versailles", "Fall of the Berlin Wall"],
+    correctAnswer: "Assassination of Archduke Franz Ferdinand",
+    explanation: "The assassination of Archduke Franz Ferdinand of Austria-Hungary on June 28, 1914, in Sarajevo, Bosnia, triggered the start of World War I."
+  },
+  {
+    question: "Who was the Prime Minister of the United Kingdom during World War II?",
+    options: ["Winston Churchill", "Neville Chamberlain", "Margaret Thatcher", "Clement Attlee"],
+    correctAnswer: "Winston Churchill",
+    explanation: "Winston Churchill served as the Prime Minister of the United Kingdom during most of World War II, from 1940 to 1945."
+  },
+  {
+    question: "What was the name of the policy pursued by the Soviet Union to exert influence over Eastern Europe after World War II?",
+    options: ["The Iron Curtain", "The Marshall Plan", "Glasnost", "Perestroika"],
+    correctAnswer: "The Iron Curtain",
+    explanation: "The Iron Curtain was a term used to describe the boundary that divided Europe into two separate areas of political influence after World War II, with the Soviet Union controlling Eastern Europe."
+  },
+  {
+    question: "Who was the leader of the Indian independence movement known for his nonviolent resistance against British rule?",
+    options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Subhas Chandra Bose", "Sardar Vallabhbhai Patel"],
+    correctAnswer: "Mahatma Gandhi",
+    explanation: "Mahatma Gandhi, also known as the 'Father of the Nation' in India, led the nonviolent civil disobedience movement for India's independence from British rule."
+  },
+  {
+    question: "Which event marked the beginning of the Great Depression?",
+    options: ["Stock Market Crash of 1929", "Signing of the Treaty of Versailles", "Russian Revolution", "Assassination of Archduke Franz Ferdinand"],
+    correctAnswer: "Stock Market Crash of 1929",
+    explanation: "The Stock Market Crash of 1929, also known as Black Tuesday, marked the beginning of the Great Depression, a severe worldwide economic depression."
+  },
+  {
+    question: "Who was the leader of the Bolshevik Revolution in Russia?",
+    options: ["Vladimir Lenin", "Joseph Stalin", "Leon Trotsky", "Nicholas II"],
+    correctAnswer: "Vladimir Lenin",
+    explanation: "Vladimir Lenin was the leader of the Bolshevik Party and the architect of the October Revolution in Russia in 1917, leading to the establishment of the Soviet Union."
+  },
+  {
+    question: "Which treaty formally ended World War I?",
+    options: ["Treaty of Versailles", "Treaty of Trianon", "Treaty of Brest-Litovsk", "Treaty of Saint-Germain-en-Laye"],
+    correctAnswer: "Treaty of Versailles",
+    explanation: "The Treaty of Versailles, signed on June 28, 1919, formally ended World War I and imposed harsh penalties and territorial losses on Germany."
+  },
+  {
+    question: "Who was the first female Prime Minister of the United Kingdom?",
+    options: ["Margaret Thatcher", "Theresa May", "Indira Gandhi", "Angela Merkel"],
+    correctAnswer: "Margaret Thatcher",
+    explanation: "Margaret Thatcher served as the Prime Minister of the United Kingdom from 1979 to 1990, making her the first female Prime Minister in British history."
+  },
+  {
+    question: "What was the name of the first artificial satellite launched into space?",
+    options: ["Sputnik 1", "Explorer 1", "Vanguard 1", "Luna 1"],
+    correctAnswer: "Sputnik 1",
+    explanation: "Sputnik 1, launched by the Soviet Union on October 4, 1957, was the first artificial satellite to orbit the Earth, marking the beginning of the space age."
+  },
+  {
+    question: "Who was the first person to step on the moon?",
+    options: ["Neil Armstrong", "Buzz Aldrin", "Yuri Gagarin", "John Glenn"],
+    correctAnswer: "Neil Armstrong",
+    explanation: "Neil Armstrong, an American astronaut, was the first person to step onto the lunar surface on July 20, 1969, during the Apollo 11 mission."
+  },
+  {
+    question: "Which event marked the end of the Cold War?",
+    options: ["Fall of the Berlin Wall", "Cuban Missile Crisis", "Vietnam War", "Suez Crisis"],
+    correctAnswer: "Fall of the Berlin Wall",
+    explanation: "The Fall of the Berlin Wall on November 9, 1989, symbolically marked the end of the Cold War and the beginning of the reunification of East and West Germany."
+  },
+  {
+    question: "Who was the leader of the Soviet Union during the Cuban Missile Crisis?",
+    options: ["Nikita Khrushchev", "Joseph Stalin", "Leonid Brezhnev", "Mikhail Gorbachev"],
+    correctAnswer: "Nikita Khrushchev",
+    explanation: "Nikita Khrushchev was the leader of the Soviet Union during the Cuban Missile Crisis in 1962, a tense confrontation between the United States and the Soviet Union over the presence of Soviet ballistic missiles in Cuba."
+  },
+  {
+    question: "Which agreement established the European Economic Community (EEC)?",
+    options: ["Treaty of Rome", "Treaty of Lisbon", "Maastricht Treaty", "Schengen Agreement"],
+    correctAnswer: "Treaty of Rome",
+    explanation: "The Treaty of Rome, signed in 1957 by six European countries, established the European Economic Community (EEC), which later evolved into the European Union (EU)."
+  },
+  {
+    question: "Who was the first woman to win the Nobel Prize?",
+    options: ["Marie Curie", "Rosalind Franklin", "Mother Teresa", "Sylvia Earle"],
+    correctAnswer: "Marie Curie",
+    explanation: "Marie Curie, a physicist and chemist, was the first woman to win a Nobel Prize. She won the Nobel Prize in Physics in 1903 and the Nobel Prize in Chemistry in 1911."
+  },
+  {
+    question: "Which U.S. president signed the Civil Rights Act of 1964 into law?",
+    options: ["Lyndon B. Johnson", "John F. Kennedy", "Richard Nixon", "Dwight D. Eisenhower"],
+    correctAnswer: "Lyndon B. Johnson",
+    explanation: "President Lyndon B. Johnson signed the Civil Rights Act of 1964 into law, prohibiting discrimination based on race, color, religion, sex, or national origin."
+  },
+  {
+    question: "Who was the first African American to serve as President of the United States?",
+    options: ["Barack Obama", "Martin Luther King Jr.", "Nelson Mandela", "Thurgood Marshall"],
+    correctAnswer: "Barack Obama",
+    explanation: "Barack Obama made history by becoming the first African American to be elected as President of the United States. He served two terms from 2009 to 2017."
+  },
+  {
+    question: "Which country was the first to grant women the right to vote?",
+    options: ["New Zealand", "United States", "United Kingdom", "Australia"],
+    correctAnswer: "New Zealand",
+    explanation: "New Zealand was the first country to grant women the right to vote in national elections, passing the Electoral Act in 1893."
+  },
+  {
+    question: "Who founded the Red Cross?",
+    options: ["Henry Dunant", "Clara Barton", "Florence Nightingale", "Dorothy Dix"],
+    correctAnswer: "Henry Dunant",
+    explanation: "Henry Dunant, a Swiss humanitarian, founded the Red Cross in 1863, establishing the International Committee of the Red Cross (ICRC) to provide humanitarian aid during armed conflicts."
+  },
+  {
+    question: "Which city hosted the first modern Olympic Games?",
+    options: ["Athens", "Paris", "London", "Rome"],
+    correctAnswer: "Athens",
+    explanation: "Athens, the capital of Greece, hosted the first modern Olympic Games in 1896, marking the revival of the ancient Olympic Games."
+  },
+  {
+    question: "Who was the first woman to fly solo across the Atlantic Ocean?",
+    options: ["Amelia Earhart", "Bessie Coleman", "Harriet Quimby", "Jacqueline Cochran"],
+    correctAnswer: "Amelia Earhart",
+    explanation: "Amelia Earhart, an American aviator, became the first woman to fly solo across the Atlantic Ocean in 1932, completing the journey from Newfoundland to Ireland."
+  },
+  {
+    question: "Which country was the first to launch a satellite into space?",
+    options: ["Soviet Union", "United States", "China", "France"],
+    correctAnswer: "Soviet Union",
+    explanation: "The Soviet Union launched the first artificial satellite, Sputnik 1, into space on October 4, 1957, initiating the space age."
+  },
+  {
+    question: "Who was the first woman to win a Nobel Prize?",
+    options: ["Marie Curie", "Rosalind Franklin", "Mother Teresa", "Sylvia Earle"],
+    correctAnswer: "Marie Curie",
+    explanation: "Marie Curie, a physicist and chemist, was the first woman to win a Nobel Prize. She won the Nobel Prize in Physics in 1903 and the Nobel Prize in Chemistry in 1911."
+  },
+  {
+    question: "Who developed the theory of relativity?",
+    options: ["Albert Einstein", "Isaac Newton", "Galileo Galilei", "Stephen Hawking"],
+    correctAnswer: "Albert Einstein",
+    explanation: "Albert Einstein, a German-born physicist, developed the theory of relativity, which revolutionized our understanding of space, time, and gravity."
+  },
+  {
+    question: "Which scientist is known for discovering the structure of DNA?",
+    options: ["James Watson and Francis Crick", "Gregor Mendel", "Rosalind Franklin", "Charles Darwin"],
+    correctAnswer: "James Watson and Francis Crick",
+    explanation: "James Watson and Francis Crick, along with Maurice Wilkins, are credited with discovering the double helix structure of DNA in 1953."
+  },
+  {
+    question: "Which country was the first to grant women the right to vote?",
+    options: ["New Zealand", "United States", "United Kingdom", "Australia"],
+    correctAnswer: "New Zealand",
+    explanation: "New Zealand was the first country to grant women the right to vote in national elections, passing the Electoral Act in 1893."
+  },
+  {
+    question: "Who was the first woman to climb Mount Everest?",
+    options: ["Junko Tabei", "Reinhold Messner", "Edmund Hillary", "Tenzing Norgay"],
+    correctAnswer: "Junko Tabei",
+    explanation: "Junko Tabei, a Japanese mountaineer, became the first woman to reach the summit of Mount Everest on May 16, 1975."
+  },
+  {
+    question: "Who was the first American to orbit the Earth?",
+    options: ["John Glenn", "Neil Armstrong", "Buzz Aldrin", "Alan Shepard"],
+    correctAnswer: "John Glenn",
+    explanation: "John Glenn, a NASA astronaut, became the first American to orbit the Earth on February 20, 1962, during the Friendship 7 mission."
+  },
+  {
+    question: "Which treaty marked the end of World War II?",
+    options: ["Treaty of Versailles", "Treaty of San Francisco", "Treaty of Trianon", "Treaty of Yalta"],
+    correctAnswer: "Treaty of San Francisco",
+    explanation: "The Treaty of San Francisco, also known as the Peace Treaty with Japan, officially ended World War II in 1951 and established the post-war order in the Asia-Pacific region."
+  },
+  {
+    question: "Who founded the United Nations?",
+    options: ["Franklin D. Roosevelt and Winston Churchill", "Woodrow Wilson", "Joseph Stalin", "Harry S. Truman"],
+    correctAnswer: "Franklin D. Roosevelt and Winston Churchill",
+    explanation: "The United Nations was founded in 1945 by 51 countries, led by Franklin D. Roosevelt of the United States and Winston Churchill of the United Kingdom, in an effort to promote international cooperation and prevent future conflicts."
+  },
+  {
+    question: "Who was the first woman to win the Nobel Prize in Literature?",
+    options: ["Selma Lagerlöf", "Gabriela Mistral", "Pearl S. Buck", "Doris Lessing"],
+    correctAnswer: "Selma Lagerlöf",
+    explanation: "Selma Lagerlöf, a Swedish author, became the first woman to win the Nobel Prize in Literature in 1909 for her storytelling and literary achievements."
+  }
+];
+
+
+function displayQuestion() {
+    const todaysDate = getTodaysDate();
+    const index = (todaysDate - 1); // Adjusted index to start from 0
+
+    const questionElement1 = document.getElementById('question1');
+    const optionsElement1 = document.getElementById('options1');
+    const feedbackElement1 = document.getElementById('feedback1');
+
+    questionElement1.textContent = questionsanc[index].question;
+    optionsElement1.innerHTML = '';
+
+    questionsanc[index].options.forEach((option, idx) => {
+      const optionElement = document.createElement('input');
+      optionElement.type = 'radio';
+      optionElement.name = 'option1';
+      optionElement.value = option;
+      optionElement.id = `option1-${idx}`;
+      optionsElement1.appendChild(optionElement);
+
+      const labelElement = document.createElement('label');
+      labelElement.htmlFor = `option1-${idx}`;
+      labelElement.textContent = option;
+      labelElement.classList.add('option');
+      optionsElement1.appendChild(labelElement);
+    });
+
+    const questionElement2 = document.getElementById('question2');
+    const optionsElement2 = document.getElementById('options2');
+    const feedbackElement2 = document.getElementById('feedback2');
+
+    questionElement2.textContent = questionsmod[index].question;
+    optionsElement2.innerHTML = '';
+
+    questionsmod[index].options.forEach((option, idx) => {
+      const optionElement = document.createElement('input');
+      optionElement.type = 'radio';
+      optionElement.name = 'option2';
+      optionElement.value = option;
+      optionElement.id = `option2-${idx}`;
+      optionsElement2.appendChild(optionElement);
+
+      const labelElement = document.createElement('label');
+      labelElement.htmlFor = `option2-${idx}`;
+      labelElement.textContent = option;
+      labelElement.classList.add('option');
+      optionsElement2.appendChild(labelElement);
+    });
+
+    const questionElement3 = document.getElementById('question3');
+    const optionsElement3 = document.getElementById('options3');
+    const feedbackElement3 = document.getElementById('feedback3');
+
+    questionElement3.textContent = medquestions[index].question;
+    optionsElement3.innerHTML = '';
+
+    medquestions[index].options.forEach((option, idx) => {
+      const optionElement = document.createElement('input');
+      optionElement.type = 'radio';
+      optionElement.name = 'option3';
+      optionElement.value = option;
+      optionElement.id = `option3-${idx}`;
+      optionsElement3.appendChild(optionElement);
+
+      const labelElement = document.createElement('label');
+      labelElement.htmlFor = `option3-${idx}`;
+      labelElement.textContent = option;
+      labelElement.classList.add('option');
+      optionsElement3.appendChild(labelElement);
+    });
+  }
+
+
+
+
+  // Function to get today's date
+ function getTodaysDate() {
+  const today = new Date();
+  return today.getDate();
+}
+
+// Function to display the question of the day
+
+
+
+  
+ function checkAnswer(questionIndex) {
+    let selectedOption;
+    let feedbackElement;
+	
+	const todaysDate2 = getTodaysDate();
+  const index = (todaysDate2 - 1)
+
+    if (questionIndex === 0) {
+      selectedOption = document.querySelector('input[name="option1"]:checked');
+      feedbackElement = document.getElementById('feedback1');
+    } else if (questionIndex === 1) {
+      selectedOption = document.querySelector('input[name="option2"]:checked');
+      feedbackElement = document.getElementById('feedback2');
+    } else {
+      selectedOption = document.querySelector('input[name="option3"]:checked');
+      feedbackElement = document.getElementById('feedback3');
+    }
+
+    if (!selectedOption) {
+      feedbackElement.textContent = 'Please select an option.';
+      return;
+    }
+
+    const selectedAnswer = selectedOption.value;
+    let currentQuestion;
+
+    if (questionIndex === 0) {
+      currentQuestion = questionsanc[index]; // Adjusted index here
+    } else if (questionIndex === 1) {
+      currentQuestion = questionsmod[index]; // Adjusted index here
+    } else {
+      currentQuestion = medquestions[index]; // Adjusted index here
+    }
+
+    if (selectedAnswer === currentQuestion.correctAnswer) {
+      feedbackElement.innerHTML = `<p>Correct!</p><p>${currentQuestion.explanation}</p>`;
+      feedbackElement.style.color = "#008000";
+    } else {
+      feedbackElement.innerHTML = `<p>Incorrect. The correct answer is: ${currentQuestion.correctAnswer}</p><p>${currentQuestion.explanation}</p>`;
+      feedbackElement.style.color = "#ff0000";
+    }
+}
+
+  // Display questions when the page loads
+  displayQuestion();
+</script>
+
+
+</body>
+</html>
