@@ -23,7 +23,7 @@ $(document).ready(function() {
             } else {
                 clearInterval(countdown);
                 // Redirect to another URL
-                window.location.href = "https://devijagannadh-techdevp.github.io/radhasurekha.github.io/";
+                window.location.href = "https://radhasurekha.netlify.app/";
             }
         }, 1000);
     });
