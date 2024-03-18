@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>We're Sorry</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden; /* Hide overflowing balloons */
+    }
+    .container {
+      text-align: center;
+      padding: 50px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #ff4500;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #ff4500;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .balloon {
+      position: absolute;
+      width: 100px; /* Larger balloon size */
+      height: 120px; /* Larger balloon size */
+      background-color: #f00; /* Red balloon */
+      border-radius: 50%; /* Balloon shape */
+      animation: fly 10s linear infinite; /* Balloon flying animation */
+    }
+    /* Keyframes for flying animation */
+    @keyframes fly {
+      0% {
+        transform: translateY(100vh) rotateZ(0deg); /* Start from bottom of the screen */
+      }
+      100% {
+        transform: translateY(-120vh) rotateZ(360deg); /* End above the top of the screen */
+      }
+    }
+    .balloon:nth-child(2n) {
+      background-color: #00f; /* Blue balloon */
+    }
+    .balloon:nth-child(3n) {
+      background-color: #0f0; /* Green balloon */
+    }
+    .balloon:nth-child(4n) {
+      background-color: #ff0; /* Yellow balloon */
+    }
+    .balloon:nth-child(5n) {
+      background-color: #f0f; /* Purple balloon */
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <thead>We're Sorry</thead>
+  <h1>Hey SU, We're Sorry | Malli ela cheyyam</h1>
+  <p>We sincerely apologize for any inconvenience caused. Will you give us another chance coz we love you choo much!!!!!?</p>'
+<p>Also ne website ki official launch eppudu chedda, me parents cheta ribbon cutting cheyyiddam, kinda link ni press chey page vasthadi</p>
+<a href="https://devijagannadh-techdevp.github.io/tools.github.io/dist/">CLICK HERE</a><br>
+
+  <button onclick="ask('yes')">Yes</button>
+  <button id="noBtn" onclick="ask('no')">No</button>
+</div>
+
+<!-- Balloons -->
+<script>
+  let count = 0;
+
+  function ask(response) {
+    if (response === 'no') {
+      count++;
+      if (count < 3) {
+        alert("We understand. Let's give it another try.");
+      } else {
+        document.getElementById('noBtn').classList.add('hidden');
+      }
+    } else {
+      alert("Thank you for giving us another chance!");
+      count = 0;
+    }
+  }
+</script>
+
+<!-- Generate balloons -->
+<script>
+  // Number of balloons
+  const numBalloons = Math.floor(Math.random() * 11) + 20; // Random number between 20 and 30
+
+  // Create balloons
+  for (let i = 0; i < numBalloons; i++) {
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+    balloon.style.left = Math.floor(Math.random() * 101) + '%'; // Random horizontal position
+    balloon.style.animationDuration = (Math.random() * 5 + 5) + 's'; // Random animation duration between 5s and 10s
+    document.body.appendChild(balloon);
+  }
+</script>
+
+</body>
+</html>
