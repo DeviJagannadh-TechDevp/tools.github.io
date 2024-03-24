@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CODE VERIFY</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; /* Hide overflow to prevent scrolling */
+  }
+
+  .container {
+    text-align: center;
+    color: #ff3399;
+    padding: 30px;
+    background-color: #ffefff;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    animation: float 5s ease-in-out infinite alternate;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #ff3399;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+  }
+
+  form {
+    display: inline-block;
+    margin-top: 50px;
+    animation: slideDown 1s forwards;
+  }
+
+  input[type="text"] {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 1.2rem;
+    transition: margin-top 1s ease-in-out;
+    margin-top: -200px; /* Initial position off-screen */
+  }
+
+  button {
+    background-color: #ff3399;
+    color: #fff;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1.2rem;
+  }
+
+  button:hover {
+    background-color: #e60073;
+  }
+
+  #quoteOutput {
+    margin-top: 50px;
+    font-size: 1.5rem;
+    color: transparent;
+    font-style: italic;
+    text-align: center;
+    display: inline-block;
+    overflow: hidden;
+    animation: fadeIn 2s forwards;
+  }
+
+  .heart {
+    color: #ff3399;
+    font-size: 2.5rem;
+    margin-right: 5px;
+    animation: heartbeat 1s infinite alternate;
+    display: inline-block;
+    opacity: 0;
+    transform: scale(0.1);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(-20px);
+    }
+    100% {
+      transform: translateY(20px);
+    }
+  }
+
+  @keyframes slideDown {
+    0% {
+      margin-top: -200px;
+    }
+    100% {
+      margin-top: 0;
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      color: transparent;
+    }
+    100% {
+      color: #ff3399;
+    }
+  }
+
+  @keyframes heartbeat {
+    0% {
+      opacity: 0;
+      transform: scale(0.1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.1);
+    }
+  }
+
+  #quoteOutput.show {
+    opacity: 1;
+    transform: scale(1);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h3><span class="heart">&#10084;</span> Congooo!! If you are here that means you just completed a topic. Proud of youuu!!! <span class="heart">&#10084;</span></h3>
+  <h1><span class="heart">&#10084;</span> Enter Your Secret Code Here to see secret message from DJ <span class="heart">&#10084;</span></h1>
+  <form onsubmit="return displayLoveQuote()">
+    <input type="text" id="codeInput" maxlength="5" required>
+    <button type="submit"><span class="heart">&#10084;</span> Submit <span class="heart">&#10084;</span></button>
+  </form>
+
+  <p id="quoteOutput" class="heart"></p>
+</div>
+
+<script>
+// Love quotes and motivation messages mapped to codes
+var quotesMap = {
+  "A1B2C": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, I love you more than words can express.</span> You're my everything. Keep shining!",
+  "D3E4F": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, My love for you knows no bounds.</span> You're the light of my life. Keep being amazing!",
+  "G5H6I": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Every moment with you is a blessing.</span> I cherish our love deeply. Keep spreading love!",
+  "J7K8L": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, You make my heart skip a beat.</span> I'm grateful for your love. Keep being awesome!",
+  "M9N0O": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, You're the reason I smile every day.</span> Your love brightens my world. Keep shining bright!",
+  "P1Q2R": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love fills my heart with joy.</span> You're my happiness. Keep spreading joy!",
+  "S3T4U": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, You're the melody to my heart's song.</span> Your love is music to my soul. Keep singing!",
+  "V5W6X": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my greatest treasure.</span> You're my treasure. Keep shining!",
+  "Y7Z8A": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, You're the sunshine in my life.</span> Your love brightens my every day. Keep shining!",
+  "B9C0D": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, You're my forever and always.</span> Your love is eternal. Keep loving!",
+  "E1F2G": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is the anchor that keeps me grounded.</span> You're my rock. Keep being strong!",
+  "H3I4J": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my guiding light.</span> You lead me to happiness. Keep shining!",
+  "K5L6M": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, You're the center of my universe.</span> Your love revolves around my heart. Keep shining!",
+  "N7O8P": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my sanctuary.</span> You're my safe haven. Keep being secure!",
+  "Q9R0S": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my strength.</span> You empower me to be my best. Keep being strong!",
+  "T1U2V": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my inspiration.</span> You fuel my creativity. Keep inspiring!",
+  "W3X4Y": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my motivation.</span> You drive me to succeed. Keep motivating!",
+  "Z5A6B": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my happiness.</span> You make my heart smile. Keep spreading joy!",
+  "C7D8E": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my paradise.</span> You're my heaven on earth. Keep being heavenly!",
+  "F9G0H": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my serenity.</span> You calm my soul. Keep being peaceful!",
+  "I1J2K": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my bliss.</span> You're my source of joy. Keep spreading happiness!",
+  "L3M4N": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my refuge.</span> You're my safe harbor. Keep being safe!",
+  "O5P6Q": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my blessing.</span> You're my greatest gift. Keep being blessed!",
+  "K7S8T": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my joy.</span> You light up my life. Keep spreading joy!",
+  "U9V0W": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my heart's desire.</span> You're my every wish. Keep being desired!",
+  "X1Y2Z": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my dream come true.</span> You're my fairy tale. Keep dreaming!",
+  "A3B4C": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my forever.</span> You're my eternity. Keep loving endlessly!",
+  "D5E6F": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my destiny.</span> You're meant for me. Keep embracing fate!",
+  "G7H8I": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my treasure.</span> You're my greatest wealth. Keep being priceless!",
+  "J9K0L": "<span class='heart'>&#10084;</span><span style='color: red;'>Hey Meg, Your love is my strength.</span> You empower me to conquer. Keep being"}
+
+// Function to display love quote and motivation message
+function displayLoveQuote() {
+  var codeInput = document.getElementById("codeInput").value;
+  var quoteOutput = document.getElementById("quoteOutput");
+  var heart = document.querySelector('.heart');
+
+  if (quotesMap.hasOwnProperty(codeInput)) {
+    quoteOutput.innerHTML = "";
+    setTimeout(function() {
+      quoteOutput.innerHTML = quotesMap[codeInput];
+      quoteOutput.classList.add('show');
+      heart.classList.add('show');
+    }, 500); // Delay before showing the quote
+  } else {
+    quoteOutput.innerHTML = "Invalid code. Please enter a valid three-digit code.";
+  }
+
+  // Prevent form submission
+  return false;
+}
+</script>
+
+</body>
+</html>
