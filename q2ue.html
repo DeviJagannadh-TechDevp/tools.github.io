@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simple Chatbot</title>
+<title>v2 Simple Chatbot</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -104,7 +104,7 @@
     function displayBotMessage(message) {
         var messageElement = document.createElement('div');
         messageElement.innerHTML = message;
-        messageElement.classList.add('message', 'bot-message');
+        messageElement.classList.add('message','bot-message');
         chatBox.appendChild(messageElement);
     }
 
@@ -119,8 +119,8 @@
         var question = questions[currentQuestionIndex];
         displayBotMessage(question.question);
 
-        var shuffledOptions = shuffleArray([...question.options]);
-        shuffledOptions.forEach(function(option, index) {
+        // Display options without jumbling
+        question.options.forEach(function(option, index) {
             displayBotMessage("(" + String.fromCharCode(97 + index) + ") " + option);
         });
     }
@@ -132,9 +132,9 @@
         displayUserMessage(userAnswer);
 
         if (userAnswer === question.answer) {
-            displayBotMessage("Correct!" +"<br><br><br><br>"+ "Next question:");
+            displayBotMessage("Correct!<br><br>Next question:");
         } else {
-            displayBotMessage("Wrong! The correct option is: " + question.options[question.answer.charCodeAt(0) - 97] + "<br><br><br><br>" + "Next question:");
+            displayBotMessage("Wrong! The correct option is: " + question.options[question.answer.charCodeAt(0) - 97] + "<br><br>Next question:");
         }
 
         currentQuestionIndex++;
@@ -154,5 +154,4 @@
 
 </body>
 </html>
-
-
+                                     
