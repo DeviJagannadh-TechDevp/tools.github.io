@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Chatbot</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    #chat-container {
+        width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .message {
+        margin-bottom: 10px;
+    }
+    .user-message {
+        color: blue;
+    }
+    .bot-message {
+        color: green;
+    }
+</style>
+</head>
+<body>
+
+<div id="chat-container">
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Enter your answer">
+    <button onclick="sendResponse()">Send</button>
+</div>
+
+<script>
+    var questions = [
+        {
+            question: "In essence, what does ‘Due Process of Law' mean?",
+            options: ["The principle of natural justice", "The procedure established by law", "Fair application of law", "Equality before law"],
+            answer: "c"
+        },
+        {
+            question: "Consider the following statements:<br>Statement-I: In India, prisons are managed by State Governments with their own rules and regulations for the day-to-day administration of prisons.<br>Statement-II: In India, prisons are governed by the Prisons Act, 1894 which expressly kept the subject of prisons in the control of Provincial Governments.<br>Which one of the following is correct in respect of the above statements?",
+            options: ["Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I", "Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-I", "Statement-I is correct but Statement-II is incorrect", "Statement-I is incorrect but Statement-II is correct"],
+            answer: "a"
+        },
+        {
+            question: "Which one of the following statements best reflects the Chief purpose of the 'Constitution' of a country?",
+            options: ["It determines the objective for the making of necessary laws.", "It enables the creation of political offices and a government.", "It defines and limits the powers of government.", "It secures social justice, social equality and social security"],
+            answer: "c"
+        },
+        {
+            question: "In India, which one of the following Constitutional Amendments was widely believed to be enacted to overcome the judicial interpretations of Fundamental Rights?",
+            options: ["1st Amendment", "42nd Amendment", "44th Amendment", "86th Amendment"],
+            answer: "a"
+        },
+        {
+            question: "Consider the following organizations/bodies in India:<br>The National Commission for Backward Classes<br>The National Human Rights Commission<br>The National Law Commission<br>The National Consumer Disputes Redressal Commission<br>How many of the above constitutional bodies?",
+            options: ["Only one", "Only two", "Only three", "All four"],
+            answer: "a"
+        },
+        {
+            question: "Consider the following statements:<br>If the election of the President of India is declared void by the Supreme Court of India, all acts done by him/her in the performance of duties of his/her office of President before the date of decision become invalid.<br>Elections for the post of the President of India can be postponed on the ground that some Legislative Assemblies have been dissolved and elections are yet to take place.<br>When a Bill is presented to the President of India, the Constitution prescribes time limits within which he/she has to declare his/her assent.<br>How many of the above statements are correct?",
+            options: ["Only one", "Only two", "All three", "None"],
+            answer: "d"
+        },
+        {
+            question: "With reference to Finance Bill and Money Bill in the Indian Parliament, consider the following statements:<br>When the Lok Sabha transmits the Finance Bill to the Rajya Sabha, it can amend or reject the Bill.<br>When the Lok Sabha transmits Money Bill to the Rajya Sabha, it cannot amend or reject the Bill, it can only make recommendations.<br>In the case of disagreement between the Lok Sabha and the Rajya Sabha, there is no joint sitting for Money Bill, but a joint sitting becomes necessary for the Finance Bill.<br>How many of the above statements are correct?",
+            options: ["Only one", "Only two", "All three", "None"],
+            answer: "a"
+        },
+        {
+            question: "With reference to Scheduled Areas in India, consider the following statements:<br>Within a State, the notification of an area as Scheduled Area takes place through an Order of the President.<br>With reference to Scheduled Areas in India, consider the following statements:<br>Within a State, the notification of an area as Scheduled Area takes place through an Order of the President.<br>How many of the above statements are correct?",
+            options: ["Only one", "Only two", "All three", "None"],
+            answer: "b"
+        },
+        {
+            question: "Consider the following statements:<br>Statement-I: The Supreme Court of India has held in some judgments that the reservation policies made under Article 16(4) of the Constitution of India would be limited by Article 335 for maintenance of efficiency of administration.<br>Statement-II: Article 335 of the Constitution of India defines the term 'efficiency of administration'.<br>Which one of the following is correct in respect of the above statements?",
+            options: ["Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I", "Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-1", "Statement-I is correct but Statement-II is incorrect", "Statement-I is incorrect but Statement-II is correct"],
+            answer: "c"
+        },
+        {
+            question: "With reference to Home Guards, consider the following statements:<br>Home Guards are raised under the Home Guards Act and Rules of the Central Government.<br>The role of the Home Guards is to serve as an auxiliary force to the police in maintenance of internal security.<br>To prevent infiltration on the international border/coastal areas, the Border Wing Home Guards Battalions have been raised in some States.<br>How many of the above statements are correct?",
+            options: ["Only one", "Only two", "All three", "None"],
+            answer: "b"
+        }
+    ];
+
+    var currentQuestionIndex = 0;
+    var chatBox = document.getElementById('chat-box');
+
+    function shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
+    }
+
+    function displayBotMessage(message) {
+        var messageElement = document.createElement('div');
+        messageElement.innerHTML = message;
+        messageElement.classList.add('message', 'bot-message');
+        chatBox.appendChild(messageElement);
+    }
+
+    function displayUserMessage(message) {
+        var messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        messageElement.classList.add('message', 'user-message');
+        chatBox.appendChild(messageElement);
+    }
+
+    function askQuestion() {
+        var question = questions[currentQuestionIndex];
+        displayBotMessage(question.question);
+
+        var shuffledOptions = shuffleArray([...question.options]);
+        shuffledOptions.forEach(function(option, index) {
+            displayBotMessage("(" + String.fromCharCode(97 + index) + ") " + option);
+        });
+    }
+
+    function sendResponse() {
+        var userAnswer = document.getElementById('user-input').value.trim().toLowerCase();
+        var question = questions[currentQuestionIndex];
+
+        displayUserMessage(userAnswer);
+
+        if (userAnswer === question.answer) {
+            displayBotMessage("Correct!" +"<br><br><br><br>"+ "Next question:");
+        } else {
+            displayBotMessage("Wrong! The correct option is: " + question.options[question.answer.charCodeAt(0) - 97] + "<br><br><br><br>" + "Next question:");
+        }
+
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            askQuestion();
+        } else {
+            displayBotMessage("All questions answered!");
+            document.getElementById('user-input').style.display = 'none';
+            document.querySelector('button').style.display = 'none';
+        }
+
+        document.getElementById('user-input').value = '';
+    }
+
+    askQuestion();
+</script>
+
+</body>
+</html>
+
+
