@@ -3,30 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>v2 Simple Chatbot</title>
+<title>TARGET UPSC - FOR MEG</title>
 <style>
     body {
         font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-image: url('https://img.etimg.com/thumb/msid-96036887,width-300,height-225,imgsize-34444,resizemode-75/upsc.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
     }
     #chat-container {
-        width: 400px;
+        max-width: 600px;
         margin: 50px auto;
         padding: 20px;
         border: 1px solid #ccc;
-        border-radius: 5px;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .message {
         margin-bottom: 10px;
     }
     .user-message {
         color: blue;
+        text-align: right;
     }
     .bot-message {
+        color: black;
+    }
+    .options {
+        color: #666;
+        padding-left: 20px;
+    }
+    .correct-answer {
         color: green;
+    }
+    .wrong-answer {
+        color: red;
+    }
+    #score {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    #score.highlight {
+        background-color: yellow;
+    }
+    #header {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    input[type="text"] {
+        width: calc(100% - 70px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    button {
+        width: 150px; /* Adjusted button width */
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
     }
 </style>
 </head>
 <body>
+
+<H1 id="header" style="color: white;">TARGET UPSC - FOR MEG</div>
+
+<div id="score" style="color: white;">Score: 0/10</div>
 
 <div id="chat-container">
     <div id="chat-box"></div>
@@ -50,46 +103,13 @@
             question: "Which one of the following statements best reflects the Chief purpose of the 'Constitution' of a country?",
             options: ["It determines the objective for the making of necessary laws.", "It enables the creation of political offices and a government.", "It defines and limits the powers of government.", "It secures social justice, social equality and social security"],
             answer: "c"
-        },
-        {
-            question: "In India, which one of the following Constitutional Amendments was widely believed to be enacted to overcome the judicial interpretations of Fundamental Rights?",
-            options: ["1st Amendment", "42nd Amendment", "44th Amendment", "86th Amendment"],
-            answer: "a"
-        },
-        {
-            question: "Consider the following organizations/bodies in India:<br>The National Commission for Backward Classes<br>The National Human Rights Commission<br>The National Law Commission<br>The National Consumer Disputes Redressal Commission<br>How many of the above constitutional bodies?",
-            options: ["Only one", "Only two", "Only three", "All four"],
-            answer: "a"
-        },
-        {
-            question: "Consider the following statements:<br>If the election of the President of India is declared void by the Supreme Court of India, all acts done by him/her in the performance of duties of his/her office of President before the date of decision become invalid.<br>Elections for the post of the President of India can be postponed on the ground that some Legislative Assemblies have been dissolved and elections are yet to take place.<br>When a Bill is presented to the President of India, the Constitution prescribes time limits within which he/she has to declare his/her assent.<br>How many of the above statements are correct?",
-            options: ["Only one", "Only two", "All three", "None"],
-            answer: "d"
-        },
-        {
-            question: "With reference to Finance Bill and Money Bill in the Indian Parliament, consider the following statements:<br>When the Lok Sabha transmits the Finance Bill to the Rajya Sabha, it can amend or reject the Bill.<br>When the Lok Sabha transmits Money Bill to the Rajya Sabha, it cannot amend or reject the Bill, it can only make recommendations.<br>In the case of disagreement between the Lok Sabha and the Rajya Sabha, there is no joint sitting for Money Bill, but a joint sitting becomes necessary for the Finance Bill.<br>How many of the above statements are correct?",
-            options: ["Only one", "Only two", "All three", "None"],
-            answer: "a"
-        },
-        {
-            question: "With reference to Scheduled Areas in India, consider the following statements:<br>Within a State, the notification of an area as Scheduled Area takes place through an Order of the President.<br>With reference to Scheduled Areas in India, consider the following statements:<br>Within a State, the notification of an area as Scheduled Area takes place through an Order of the President.<br>How many of the above statements are correct?",
-            options: ["Only one", "Only two", "All three", "None"],
-            answer: "b"
-        },
-        {
-            question: "Consider the following statements:<br>Statement-I: The Supreme Court of India has held in some judgments that the reservation policies made under Article 16(4) of the Constitution of India would be limited by Article 335 for maintenance of efficiency of administration.<br>Statement-II: Article 335 of the Constitution of India defines the term 'efficiency of administration'.<br>Which one of the following is correct in respect of the above statements?",
-            options: ["Both Statement-I and Statement-II are correct and Statement-II is the correct explanation for Statement-I", "Both Statement-I and Statement-II are correct and Statement-II is not the correct explanation for Statement-1", "Statement-I is correct but Statement-II is incorrect", "Statement-I is incorrect but Statement-II is correct"],
-            answer: "c"
-        },
-        {
-            question: "With reference to Home Guards, consider the following statements:<br>Home Guards are raised under the Home Guards Act and Rules of the Central Government.<br>The role of the Home Guards is to serve as an auxiliary force to the police in maintenance of internal security.<br>To prevent infiltration on the international border/coastal areas, the Border Wing Home Guards Battalions have been raised in some States.<br>How many of the above statements are correct?",
-            options: ["Only one", "Only two", "All three", "None"],
-            answer: "b"
         }
     ];
 
     var currentQuestionIndex = 0;
     var chatBox = document.getElementById('chat-box');
+    var scoreDisplay = document.getElementById('score');
+    var score = 0;
 
     function shuffleArray(array) {
         for (var i = array.length - 1; i > 0; i--) {
@@ -101,10 +121,10 @@
         return array;
     }
 
-    function displayBotMessage(message) {
+    function displayBotMessage(message, className) {
         var messageElement = document.createElement('div');
         messageElement.innerHTML = message;
-        messageElement.classList.add('message','bot-message');
+        messageElement.classList.add('message', 'bot-message', className);
         chatBox.appendChild(messageElement);
     }
 
@@ -121,7 +141,7 @@
 
         // Display options without jumbling
         question.options.forEach(function(option, index) {
-            displayBotMessage("(" + String.fromCharCode(97 + index) + ") " + option);
+            displayBotMessage("<span class='options'>" + "(" + String.fromCharCode(97 + index) + ") " + option + "</span>");
         });
     }
 
@@ -132,16 +152,22 @@
         displayUserMessage(userAnswer);
 
         if (userAnswer === question.answer) {
-            displayBotMessage("Correct!<br><br>Next question:");
+            score++;
+            scoreDisplay.textContent = "Score: " + score + "/10";
+            scoreDisplay.classList.add('highlight');
+            setTimeout(function() {
+                scoreDisplay.classList.remove('highlight');
+            }, 3000); // Remove highlight after 3 seconds
+            displayBotMessage("Correct!<br><br>Next question:", 'correct-answer');
         } else {
-            displayBotMessage("Wrong! The correct option is: " + question.options[question.answer.charCodeAt(0) - 97] + "<br><br>Next question:");
+            displayBotMessage("Wrong! The correct option is: " + question.options[question.answer.charCodeAt(0) - 97] + "<br><br>Next question:", 'wrong-answer');
         }
 
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
             askQuestion();
         } else {
-            displayBotMessage("All questions answered!");
+            displayBotMessage("All questions answered! Final score: " + score + "/10");
             document.getElementById('user-input').style.display = 'none';
             document.querySelector('button').style.display = 'none';
         }
@@ -150,8 +176,15 @@
     }
 
     askQuestion();
+
+    function shareScore() {
+        var scoreMessage = "My score in the chatbot quiz is: " + score + "/10. Play now!";
+        var whatsappLink = "https://wa.me/919491376372?text=" + encodeURIComponent(scoreMessage);
+        window.open(whatsappLink, "_blank");
+}
 </script>
 
+<center>
+<button onclick="shareScore()">Share Score on WhatsApp</button></center>
 </body>
 </html>
-                                     
