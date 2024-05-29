@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         timerDisplay.innerHTML = `
             <div>Time Over: ${formatTime(timeRemaining)}</div>
-            <div>Time Remaining: ${formatTime(remainingTime)}</div>
+            <div>Time Target: ${formatTime(remainingTime)}</div>
             <div>Next Break Time: ${formatTime(nextBreak)}</div>
         `;
     }
